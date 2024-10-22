@@ -2,12 +2,12 @@ const express = require('express');
 const dotenv = require('dotenv');
 const eventRoutes = require('./routes/eventRoutes');
 
-dotenv.config
+//dotenv.config
 
 const app = express();
 app.use(express.json());
 
-app.use('api/eventos', eventRoutes);
+app.use('/api/eventos', eventRoutes);
 
 
 

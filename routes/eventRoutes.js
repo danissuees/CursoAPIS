@@ -6,7 +6,7 @@ const{
     getEventos
 } = require('../controllers/eventController')
 
-router.get('/api/eventos/', getEventos);
-router.get('/api/eventos/:id', getEvento);
+router.get('/', getEventos);
+router.get('/:id', getEvento);
 module.exports = router;
 
