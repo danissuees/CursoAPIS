@@ -26,7 +26,8 @@ exports.updateEvento =(id,nombre, descripcion) =>{
 
 exports.deleteEvento = (id)=>{
     const index = db.eventos.findIndex(evento=>evento.id==id);
-
-    db.eventos= db.eventos.splice(index,1)
+if(index!==-1){
+    db.eventos.splice(index,1)
+}
     return id;
 }
