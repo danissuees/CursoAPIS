@@ -29,46 +29,36 @@ exports.getEventos = async(req,res)=>{
     res.status(200).json( await selectEventos());
 }
 
-// exports.editEvento = (req,res) => {
-//     const {id} = req.params; 
-//     const {nombre, descripcion} = req.body;
+exports.editEvento = async(req,res) => {
+    const {id} = req.params; 
+    const {nombre, descripcion, fecha, lugar} = req.body;
 
-//     const editId=updateEvento(id,nombre,descripcion);
-//     if(!editId){
-//         res.status(404).json('No existe el ID')
-//     }
-//     else{
-//         res.status(200).json('Se realizaron cambios en el ID: ' + editId)
-//     }
-//     // const evento = eventos.find(evento => evento.id ==id)
+    const filasAfectadas= await updateEvento(id,nombre,descripcion, fecha, lugar);
+    res.status(200).json('Se modificaron: ' + filasAfectadas)
+}
 
-//     // evento.nombre = nombre;
-//     // evento.descripcion = descripcion;
+exports.createEvento = async(req,res)=>{
+    const {nombre, descripcion, fecha, lugar} = req.body;
 
-//     // console.info(eventos);
-
-//     // res.status(200).json('Se realizaron en el evento ' + id);
-// }
-
-// exports.createEvento = (req,res)=>{
-//     const {nombre, descripcion} = req.body;
-   
+    const id = await insertarEvento(nombre,descripcion, fecha, lugar);
+    res.status(200).json('Se creo el evento ' + nombre + ' con el id: '+ id);
     
-//     const id = insertarEvento(nombre,descripcion);
-//     res.status(200).json('Se creo el evento ' + nombre + ' con el id: '+ id);
-    
-// }
+}
 
-// exports.deleteEvento = (req,res) =>{
-//     try{
-//     const { id } = req.params;
+exports.deleteEvento = async(req,res) =>{
+    try{
+    const { id } = req.params;
 
-//     const nombre = deleteEvento(id);
+    const filasAfectadas = await deleteEvento(id);
 
-//     res.status(200).json('Se elimino el evento ' + nombre);
-//     }
-//     catch(error){
-//         res.status(400).json(error);
-
-//     }
-// }
+    if(filasAfectadas == 1){
+        res.status(200).json('Se elimino el evento ' + id);
+    }
+    else{
+        res.status(404).json('No se afecto nada jasjajasjajs')
+    }
+    }
+    catch(error){
+        res.status(400).json(error);
+    }
+}
