@@ -1,37 +1,28 @@
 const db = require('../config/db.js');
 
-let eventos = [
-    {
-        id: 1,
-        nombre: 'Cri cri',
-        descripcion: 'Grillitos cri cri'
-    },
-    {
-        id: 2,
-        nombre: 'Lapizito',
-        descripcion: 'Payasito'
-    },
-    {
-        id: 3,
-        nombre: 'Los Tigres del Norte',
-        descripcion: 'Banda'
-    }
-    ];
+const{
+    selectEventos,
+    selectEvento
+}=require('../dal/local.js')
+
 
 exports.getEvento = (req,res) =>{
-
+   
     const {id}= req.params;
     try{
-        const evento = eventos.find(evento => evento.id ==id);
+        //const evento = eventos.find(evento => evento.id ==id);
+        const evento = selectEvento(id);
         if(!evento){
             return res.status(404).json('El evento no existe');
         }
 
-        db.query('SELECT  id, nombre, descripcion FROM eventos WHERE id = ?',[id], (err,results)=>{
-            if(err) return res.status(500).json(err);
-            res.status(200).json(results[0]);
-        })
-        //res.status(200).josn();
+        //db.query('SELECT  id, nombre, descripcion FROM eventos WHERE id = ?',[id], (err,results)=>{
+        //    if(err) return res.status(500).json(err);
+        //    res.status(200).json(results[0]);
+      //  })
+
+     
+        res.status(200).json(evento);
     }
     catch(error){
         res.status(500).json(error.message);
@@ -40,10 +31,11 @@ exports.getEvento = (req,res) =>{
 }
 
 exports.getEventos = (req,res)=>{
-    db.query('SELECT* FROM eventos', (err,results)=>{
-        if(err) return res.status(500).json(err);
-        res.status(200).json(results);
-    })
+    res.status(200).json(selectEventos());
+   // db.query('SELECT* FROM eventos', (err,results)=>{
+     //   if(err) return res.status(500).json(err);
+       // res.status(200).json(results);
+    //})
     
     //res.status(200).json(eventos);
 }
